@@ -1,0 +1,31 @@
+job("test1") {
+	description("test1")
+	keepDependencies(false)
+	scm {
+		git {
+			remote {
+				github("shail1991/testing-jenskins", "https")
+			}
+			branch("*/master")
+		}
+	}
+	disabled(false)
+	concurrentBuild(false)
+	steps {
+		shell("""#!/bin/bash
+
+mkdir new
+cd \$Worospace/new
+
+echo "this is test" >> new-file""")
+	}
+	publishers {
+		archiveArtifacts {
+			pattern("new-file")
+			allowEmpty(false)
+			onlyIfSuccessful(false)
+			fingerprint(false)
+			defaultExcludes(true)
+		}
+	}
+}
